@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 
-def setup_logging():
+def setup_logging() -> logging:
     logger = logging.getLogger(__name__)
 
     file_handler = logging.FileHandler(

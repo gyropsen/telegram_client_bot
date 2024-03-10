@@ -1,8 +1,14 @@
+import asyncio
+from pyrogram import Client
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 # from telethon import TelegramClient
-#
 # # Use your own values from my.telegram.org
-# api_id = 24351455
-# api_hash = '4a48e819a4d21a3187b378988c97c256'
+# api_id = os.getenv("api_id")
+# api_hash = os.getenv("api_hash")
 #
 #
 # async def main():
@@ -16,11 +22,8 @@
 #     client.loop.run_until_complete(main())
 
 
-import asyncio
-from pyrogram import Client
-
-api_id = 24351455
-api_hash = "4a48e819a4d21a3187b378988c97c256"
+api_id = os.getenv("api_id")
+api_hash = os.getenv("api_hash")
 
 
 async def main():

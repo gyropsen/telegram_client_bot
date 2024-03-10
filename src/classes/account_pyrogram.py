@@ -11,7 +11,7 @@ class TGAccountPyrogram(ABCAccount):
     ABCAccount.proxy["scheme"] = ABCAccount.proxy.pop("proxy_type")
     ABCAccount.proxy["hostname"] = ABCAccount.proxy.pop("addr")
 
-    def __init__(self, number):
+    def __init__(self, number: str):
         self.number = number
         self.session = ""
         self.premium = False

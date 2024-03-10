@@ -3,8 +3,11 @@ import json
 import logging
 import os
 import time
+from typing import Any
 
 from telethon.errors.rpcerrorlist import PhoneNumberBannedError
+
+from src.classes.account_telethon import TGAccountTelethon
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +27,7 @@ def write_xlsx(path: str, data: list[dict]) -> None:
             writer.writerow(row)
 
 
-def read_json(path: str) -> list | dict:
+def read_json(path: str) -> list[Any] | dict[Any, Any]:
     with open(path, "r") as file:
         data = json.load(file)
     return data
@@ -43,7 +46,7 @@ def get_numbers(path: str) -> list:
         return []
 
 
-def add_numbers(path):
+def add_numbers(path: str) -> None:
     input_phones = input("Enter phone numbers separated by commas " "<79001234567, 627871234567, 911156231278>: ")
 
     available_numbers = get_numbers(path)
@@ -62,9 +65,9 @@ def add_numbers(path):
     print(f"Such numbers will be recorded: {available_numbers}")
 
 
-def get_username_channel():
+def get_username_channel() -> str:
     while True:
-        channel = input("Enter the link to the format channel <https://t.me/wewantyoutodothejob>: ")
+        channel: str = input("Enter the link to the format channel <https://t.me/wewantyoutodothejob>: ")
         if channel[:13] != "https://t.me/":
             print("Incorrect URL, please enter again")
             time.sleep(2)
@@ -74,13 +77,13 @@ def get_username_channel():
             return channel
 
 
-def subscribe_telethon(account, username_channel, subscribe: bool) -> None:
+def subscribe_telethon(account: TGAccountTelethon, username_channel: str, subscribe: bool) -> None:
     if subscribe:
         action = account.subscribe
     else:
         action = account.unsubscribe
     try:
-        with account.get_client_telethon() as client:
+        with account.get_client() as client:
             client.loop.run_until_complete(action(username_channel, client))
     except PhoneNumberBannedError as ban_error:
         logger.error(ban_error)
@@ -90,7 +93,7 @@ def subscribe_telethon(account, username_channel, subscribe: bool) -> None:
         print(error)
 
 
-def readiness_check_telethon(account):
+def readiness_check_telethon(account: TGAccountTelethon) -> None:
     client = account.get_client()
     with client:
         client.loop.run_until_complete(account.get_status_premium(client))
