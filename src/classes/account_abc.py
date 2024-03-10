@@ -1,8 +1,8 @@
 import os
 from abc import ABC, abstractmethod
 from pathlib import Path
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from pyrogram import Client as PyrogramClient
 from telethon.sync import TelegramClient
 
