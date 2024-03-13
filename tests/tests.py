@@ -33,3 +33,10 @@ async def main():
 
 
 asyncio.run(main())
+
+#  is not callable
+# 'coroutine' object is not callable
+# /home/egor/PycharmProjects/telegram_client_bot/src/utils/utils.py:119: RuntimeWarning: coroutine 'TGAccountTelethon.subscribe' was never awaited
+#   print(error)
+# RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+

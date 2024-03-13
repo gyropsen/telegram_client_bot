@@ -1,15 +1,24 @@
+import os
 import random
 import time
 from pathlib import Path
 
+from dotenv import load_dotenv
 from pyrogram import Client as PyrogramClient
 
 from src.classes.account_abc import ABCAccount
 
+load_dotenv()
+
 
 class TGAccountPyrogram(ABCAccount):
-    ABCAccount.proxy["scheme"] = ABCAccount.proxy.pop("proxy_type")
-    ABCAccount.proxy["hostname"] = ABCAccount.proxy.pop("addr")
+    proxy = {
+        "scheme": os.getenv("proxy_type"),  # (mandatory) protocol to use (see above)
+        "hostname": os.getenv("proxy_addr"),  # (mandatory) proxy IP address
+        "port": int(os.getenv("proxy_port")),  # (mandatory) proxy port number
+        "username": os.getenv("proxy_username"),  # (optional) username if the proxy requires auth
+        "password": os.getenv("proxy_password"),  # (optional) password if the proxy requires auth
+    }
 
     def __init__(self, number: str):
         self.number = number
@@ -92,3 +101,14 @@ class TGAccountPyrogram(ABCAccount):
         else:
             print(f"Account {self.number} is not subscribed to the channel {username_channel}")
             time.sleep(3)
+
+    @staticmethod
+    def run(client, action, *args) -> None:
+        """
+        Запуск в асинхронном режиме необходимые фунции
+        :param client: Client_Pyrogram
+        :param action: необходимая функция
+        :param args: позиционные аргументы
+        :return: None
+        """
+        client.run(action(*args, client))

@@ -1,5 +1,4 @@
 from src.utils import *
-from src.classes.account_telethon import TGAccountTelethon
 from src.logger import setup_logging
 
 from telethon.errors.rpcerrorlist import PhoneNumberBannedError
@@ -16,6 +15,7 @@ logger = setup_logging()
 
 def main():
     username_channel = get_username_channel()
+    class_account = get_class_account()
     accounts: list = []
 
     main_menu_title = "  Main Menu.\n  Press Q or Esc to quit. \n"
@@ -67,12 +67,12 @@ def main():
 
         if main_sel == 0:
 
-            available_numbers: list = get_numbers(phone_numbers_path)
-            accounts: list[TGAccountTelethon] = [TGAccountTelethon(number) for number in available_numbers]
+            available_numbers: list[str, str] | list = get_numbers(phone_numbers_path)
+            accounts: list = [class_account(number) for number in available_numbers]
 
             for account in accounts:
                 try:
-                    readiness_check_telethon(account)
+                    readiness_check(account)
                 except PhoneNumberBannedError as ban_error:
                     logger.error(ban_error)
                     print(ban_error)
@@ -87,7 +87,7 @@ def main():
                     print("Subscribe to the channel")
 
                     for account in accounts:
-                        subscribe_telethon(account, username_channel, subscribe=True)
+                        subscribe(account, username_channel, subs=True)
 
                     print(f"All accounts subscribe to the channel {username_channel}")
                     time.sleep(3)
@@ -96,7 +96,7 @@ def main():
                     print("Unsubscribe from the channel")
 
                     for account in accounts:
-                        subscribe_telethon(account, username_channel, subscribe=False)
+                        subscribe(account, username_channel, subs=False)
 
                     print(f"All accounts unsubscribed from the channel {username_channel}")
                     time.sleep(3)
@@ -112,18 +112,18 @@ def main():
 
             if manage_phone in available_numbers:
                 print("Account number is available")
-                account = TGAccountTelethon(manage_phone)
-                readiness_check_telethon(account)
+                account = class_account(manage_phone)
+                readiness_check(account)
                 time.sleep(5)
 
                 while not manage_account_menu_back:
                     edit_sel = manage_account_menu.show()
 
                     if edit_sel == 0:
-                        subscribe_telethon(account, username_channel, subscribe=True)
+                        subscribe(account, username_channel, subs=True)
 
                     elif edit_sel == 1:
-                        subscribe_telethon(account, username_channel, subscribe=False)
+                        subscribe(account, username_channel, subs=False)
 
                     elif edit_sel == 2 or edit_sel is None:
                         manage_account_menu_back = True

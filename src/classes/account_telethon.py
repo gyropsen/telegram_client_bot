@@ -1,8 +1,10 @@
 import logging
+import os
 import random
 import time
 from pathlib import Path
 
+from dotenv import load_dotenv
 from telethon import types
 from telethon.sync import TelegramClient
 from telethon.tl.functions.channels import JoinChannelRequest, LeaveChannelRequest
@@ -10,9 +12,18 @@ from telethon.tl.functions.channels import JoinChannelRequest, LeaveChannelReque
 from src.classes.account_abc import ABCAccount
 
 logger = logging.getLogger(__name__)
+load_dotenv()
 
 
 class TGAccountTelethon(ABCAccount):
+    proxy = {
+        "proxy_type": os.getenv("proxy_type"),  # (mandatory) protocol to use (see above)
+        "addr": os.getenv("proxy_addr"),  # (mandatory) proxy IP address
+        "port": int(os.getenv("proxy_port")),  # (mandatory) proxy port number
+        "username": os.getenv("proxy_username"),  # (optional) username if the proxy requires auth
+        "password": os.getenv("proxy_password"),  # (optional) password if the proxy requires auth
+    }
+
     def __init__(self, number):
         self.number = number
         self.session = ""
@@ -94,3 +105,14 @@ class TGAccountTelethon(ABCAccount):
         else:
             print(f"Account {self.number} is not subscribed to the channel {username_channel}")
             time.sleep(3)
+
+    @staticmethod
+    def run(client, action, *args) -> None:
+        """
+        Запуск в асинхронном режиме необходимые фунции
+        :param client: Client_Pyrogram
+        :param action: необходимая функция
+        :param args: позиционные аргументы
+        :return: None
+        """
+        client.loop.run_until_complete(action(*args, client))
