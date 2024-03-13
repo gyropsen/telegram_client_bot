@@ -35,13 +35,6 @@ class ABCAccount(ABC):
     ]
     app_version = ["Telegram Android 10.6.1", "Telegram Android 10.6.0", "Telegram Android 10.5.9"]
 
-    proxy = {
-        "proxy_type": os.getenv("proxy_type"),  # (mandatory) protocol to use (see above)
-        "addr": os.getenv("proxy_addr"),  # (mandatory) proxy IP address
-        "port": os.getenv("proxy_port"),  # (mandatory) proxy port number
-        "username": os.getenv("proxy_username"),  # (optional) username if the proxy requires auth
-        "password": os.getenv("proxy_password"),  # (optional) password if the proxy requires auth
-    }
     api_id = os.getenv("api_id")
     api_hash = os.getenv("api_hash")
 
