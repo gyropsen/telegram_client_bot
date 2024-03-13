@@ -25,6 +25,7 @@ proxy_password='your_data'
 3. Подписка на telegram-каналы
 4. Отписка от telegram-каналов
 5. Проверка наличия премиума
+
 ***
 
 <h3 align="center">2 Запуск приложения</h3>
