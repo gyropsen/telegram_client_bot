@@ -34,7 +34,7 @@ class TGAccountPyrogram(ABCAccount):
         user_info = await client.get_me()
         self.premium = user_info.is_premium
 
-    def get_client(self) -> PyrogramClient:
+    def get_client(self):
         """
         Возвращает телеграм клиент
         :return: PyrogramClient

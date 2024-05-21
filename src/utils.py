@@ -66,11 +66,11 @@ def add_numbers(path: str) -> None:
     :param path: путь до файла
     :return: None
     """
-    input_phones = input("Enter phone numbers separated by commas " "<79001234567, 627871234567, 911156231278>: ")
+    input_phones = input("Enter phone numbers separated by commas " "<79001234567 627871234567 911156231278>: ")
 
     available_numbers = get_numbers(path)
 
-    numbers_phone = input_phones.strip().split(", ")
+    numbers_phone = input_phones.strip().split(" ")
     for number in numbers_phone:
         if not number.isdigit() or len(number) < 10:
             print(f"{number} is not corrected, pass")
@@ -102,14 +102,14 @@ def get_username_channel() -> str:
 
 def get_class_account():
     """
-    Получить от пользователя библиотеку, с которой можно работать
+    Получить от пользователя класс, с которым будем работать
     :return: None
     """
     while True:
         account = input(
             """Enter the library to work with:
-            1. Pyrogram\n
-            2. Telethon\n"""
+            1. Pyrogram
+            2. Telethon"""
         )
         if account == "1":
             print("Library Pyrogram selected")
