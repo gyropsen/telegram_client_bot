@@ -1,10 +1,11 @@
-from src.utils import *
-from src.logger import setup_logging
-
-from telethon.errors.rpcerrorlist import PhoneNumberBannedError
-from simple_term_menu import TerminalMenu
-from pathlib import Path
 import time
+from pathlib import Path
+
+from simple_term_menu import TerminalMenu
+from telethon.errors.rpcerrorlist import PhoneNumberBannedError
+
+from src.logger import setup_logging
+from src.utils import *
 
 phone_numbers_path = str(Path(Path(__file__).parent, "data", "phone_numbers.json"))
 accounts_data_json = str(Path(Path(__file__).parent, "data", "accounts_data.json"))
@@ -62,11 +63,9 @@ def main():
     )
 
     while not main_menu_exit:
-
         main_sel = main_menu.show()
 
         if main_sel == 0:
-
             available_numbers: list[str, str] | list = get_numbers(phone_numbers_path)
             accounts: list = [class_account(number) for number in available_numbers]
 
@@ -148,5 +147,5 @@ def main():
             print("Quit Selected")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
